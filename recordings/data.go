@@ -82,10 +82,14 @@ func GetAlbums() ([]Album, error) {
 
 func GetAlbum(id string) (Album, error) {
 
-	album := Album{
-		Id:     id,
-		Title:  id,
-		Artist: id,
+	var alb Album
+
+	row := db.QueryRow("SELECT * FROM album WHERE id = ?", id)
+	if err := row.Scan(&alb.Id, &alb.Title, &alb.Artist, &alb.Price); err != nil {
+		if err == sql.ErrNoRows {
+			return alb, fmt.Errorf("albumsById %s: no such album", id)
+		}
+		return alb, fmt.Errorf("albumsById %s: %v", id, err)
 	}
-	return album, nil
+	return alb, nil
 }
