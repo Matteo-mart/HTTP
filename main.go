@@ -8,21 +8,17 @@ import (
 )
 
 func main() {
-	log.Printf("coucou")
+
+	log.Printf("on va se connecter a la base de donnée")
+	err := recordings.InitDb()
+	if err != nil {
+		log.Printf("Impossible de se connecter à la base de donnée, err: %s", err)
+		return
+	}
+
+	log.Printf("configuration du serveur http")
+
 	mux := http.NewServeMux()
-
-	// redirection
-	rh := http.RedirectHandler("http://example.org", http.StatusTemporaryRedirect)
-	mux.Handle("/foo", rh)
-
-	// texte
-	mux.HandleFunc("/hello", func(response http.ResponseWriter, request *http.Request) {
-		response.Write([]byte("hello " + request.Method))
-	})
-
-	mux.HandleFunc("/test", func(response http.ResponseWriter, request *http.Request) {
-		response.Write([]byte("test " + request.Method))
-	})
 
 	mux.HandleFunc("GET /hello2", tests.HandlerHello2GET)
 	mux.HandleFunc("POST /hello2", tests.HandlerHello2POST)
@@ -35,5 +31,6 @@ func main() {
 	mux.HandleFunc("GET /recordings/list/{ID}", recordings.HandleGETRecording)
 	mux.HandleFunc("GET /recordings/list", recordings.HandleGETlist)
 
+	log.Printf("listening ..")
 	http.ListenAndServe(":3000", mux)
 }

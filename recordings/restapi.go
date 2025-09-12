@@ -6,47 +6,6 @@ import (
 	"net/http"
 )
 
-type Album struct {
-	Id     string
-	Title  string
-	Artist string
-	Price  float64
-}
-
-func GetAlbums() ([]Album, error) {
-
-	// if true {
-	// 	return nil, fmt.Errorf("lplluff")
-	// }
-
-	albums := make([]Album, 0)
-
-	album := Album{
-		Id:     "1",
-		Title:  "fff",
-		Artist: "fff",
-	}
-	albums = append(albums, album)
-
-	album = Album{
-		Id:     "2",
-		Title:  "aa",
-		Artist: "aaafff",
-	}
-	albums = append(albums, album)
-	return albums, nil
-}
-
-func GetAlbum(id string) (Album, error) {
-
-	album := Album{
-		Id:     id,
-		Title:  id,
-		Artist: id,
-	}
-	return album, nil
-}
-
 func HandleGETlist(response http.ResponseWriter, request *http.Request) {
 
 	albums, err := GetAlbums()
